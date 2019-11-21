@@ -20,3 +20,9 @@
 .App-link {
   color: #09d3ac;
 }
+
+#reactShopLogo {
+  color: rgb(13, 156, 97);
+  font-size: 3.5rem;
+  cursor: pointer;
+}
