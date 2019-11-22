@@ -7,9 +7,9 @@ import Footer from './components/Footer'
 
 export default () => (
   <div className="App">
-    <Header />
+    <Header height={'170px'}/>
     <Categories />
     <Goods />
-    <Footer />   
+    <Footer height={'100px'}/>   
   </div>
 )

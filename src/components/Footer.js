@@ -15,8 +15,8 @@ const Credits = ({height}) =>
       </div>
     </>
 
-export default () => 
-  <div className="Footer">
-    <Credits height={'100px'}/>
+export default ({height}) => 
+  <div className="Footer" style={{height}}>
+    <Credits height={height}/>
   </div>
 
