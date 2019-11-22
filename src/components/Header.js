@@ -67,7 +67,6 @@ const RegisterForm = ({onRegister}) => {
   const [password2, setPassword2] = useState("")
   const passwordConfirmed = password === password2
   return (
-    <>
         <div className="col-3 p-3 d-none" id="registerContainer">
           <div className="row">
             <div className="col-6">
@@ -85,7 +84,6 @@ const RegisterForm = ({onRegister}) => {
             </div>
           </div>
         </div>
-    </>
   )
 }
 
@@ -155,14 +153,13 @@ const registerGraphQL = async(login, password) => {
 }
 
 export default ({height}) => 
-  (
-  <div className="Header" style={{height}}>
+  <header className="Header" style={{height}}>
     <div className="row justify-content-around align-items-center bg-dark mb-3" style={{height}} >
       <Logo />
       <SearchBar />
       <LoginForm onLogin={ (l,p) => loginGraphQL(l,p)} />
       <RegisterForm onRegister={(l,p)=> registerGraphQL(l,p)} />
     </div>
-  </div>
-  )
+  </header>
+  
 
