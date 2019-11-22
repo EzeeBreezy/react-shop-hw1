@@ -24,13 +24,24 @@ const LoginForm = ({onLogin}) => {
           </div>
         </div>
         <div className="col-3 p-3">
-          <div className='input-group input-group-sm'>
-            <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
-            <input type="password" className="form-control m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
+          <div className="row">
+            <div className="col">
+              <div className='input-group input-group-sm'>
+                <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
+                <input type="password" className="form-control m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
+              </div>
+            </div>
           </div>
-          <button className="btn btn-info pl-2 pr-2 w-50" disabled={!validLogin || !validPassword} onClick={()=> onLogin(login, password)}>
-              Login
-          </button>
+          <div className="row">
+            <div className="col">
+              <button className="btn btn-primary pl-2 pr-2 m-3 w-25" disabled={!validLogin || !validPassword} onClick={()=> onLogin(login, password)}>
+                  Login
+              </button>
+              <button className="btn btn-info pl-2 pr-2 m-3 w-25" disabled={!validLogin || !validPassword} onClick={()=> onLogin(login, password)}>
+                  Register
+              </button>
+            </div>
+          </div>
         </div>
         <div className="col-3 p-3 d-none">
           <p className="text-warning">Welcome, Username!</p>
@@ -44,24 +55,58 @@ const LoginForm = ({onLogin}) => {
   )
 }
 
-const liginGraphQL = (login, password) => {
-  return true
-//   return fetch('http://shop-roles.asmer.fs.a-level.com.ua/graphql', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Accept': 'application/json',
-//   },
-//   body: JSON.stringify({
-//     query: `query login($login: String, $password: String){
-//     login(login:$login, password:$password)
-//   }`,
-//     variables: { login, password },
-//   })
-// })
-// .then(res => res.json())
-// .then(data => data.data.login)
+const loginGraphQL = async (login, password) => {
+  return fetch('http://shop-roles.asmer.fs.a-level.com.ua/graphql', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  },
+  body: JSON.stringify({
+    query: `query login($login: String, $password: String){
+    login(login:$login, password:$password)
+  }`,
+    variables: { login, password },
+  })
+})
+.then(res => res.json())
+.then(data => data.data.login)
 }
+
+// loginForm.onsubmit = async e => {
+//   e.preventDefault()
+//   let { value: login } = userLogin
+//   let { value: password } = userPassword
+//   if (login && password) {
+//     const query = `query login($login: String, $password: String){
+//          login(login: $login, password: $password)
+//       }`
+//     let response = await fetch(
+//       "http://shop-roles.asmer.fs.a-level.com.ua/graphql",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Accept: "application/json"
+//         },
+//         body: JSON.stringify({
+//           query,
+//           variables: { login, password }
+//         })
+//       }
+//     )
+//     let returnedData = await response.json()
+//     let token = returnedData.data.login
+//     if (token) {
+//       localStorage.authToken = token
+//       decodedToken = jwt_decode(token)
+//       console.log(decodedToken) //!!! leaving just for now
+//       userName.innerText = `Welcome, ${decodedToken.sub.login}!`
+//       userID = decodedToken.sub.id
+//       alert("Login successful")
+//     } else alert("failed to login")
+//   } else alert("Both login and password must be filled")
+// }
 
 export default () => {
   let [token, setToken] = useState(false)
@@ -69,7 +114,7 @@ export default () => {
   <div className="Header">
     <LoginForm onLogin={ (l,p) => {
       setToken("PENDING")
-      liginGraphQL(l,p).then(token => setToken(token))
+      loginGraphQL(l,p).then(token => setToken(token))
       .catch(error => setToken("REJECTED"))
     }} />
   </div>

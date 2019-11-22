@@ -5,8 +5,8 @@ import React from "react"
 const Credits = () => 
     <>
       <div className="row justify-content-end align-items-center bg-dark">
-      <i class="fab fa-bootstrap"></i>
-      <i class="fab fa-react"></i>
+      <i className="fab fa-bootstrap"></i>
+      <i className="fab fa-react"></i>
       some text here
       </div>
     </>
