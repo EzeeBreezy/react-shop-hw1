@@ -1,12 +1,10 @@
 import React, {useState} from "react"
-// import "./App.css"
-
-const Category = ({categoryName}) => <a href="#" className="list-group-item list-group-item-action">{categoryName}</a>
+import "../App.css"
 
 const readCategories = async () => {
   const query = `query getAllCategories {
     CategoryFind(query: "[{}]") {
-      name, image{
+      _id, name, image{
         url
       }
     }
@@ -27,34 +25,22 @@ const readCategories = async () => {
   )
   let categories =  await response.json()
   return categories
-  // return (
-  //   <>
-  //     {categories.data.CategoryFind.map((elem) => (
-  //       <Category categoryName={elem.name}/>
-  //     ))}
-  //   </>
-  // )
-  // console.log(categories)
-  // return categories.data.CategoryFind
 }
 
-// let categoriesList = readCategories()
-// console.log(categoriesList)
-
-const Categories = async () => {
-  let categories = await readCategories()
-  const categoriesList = categories.data.CategoryFind.map(elem => <a href="#" className="list-group-item list-group-item-action">{elem.name}</a>)
+const Categories = () => {
+  const [categoriesList, setCategoriesList] = useState([])
+  readCategories().then(data=>(setCategoriesList(data.data.CategoryFind), console.log(data)))
+  const [isActive, setActive] = useState('')
+  const activeClass = 'list-group-item list-group-item-action active'
+  const notActiveClass = 'list-group-item list-group-item-action'
   return (
-  <div className="list-group">
-      {categoriesList}
+  <div className="list-group list-group-flush">
+    {categoriesList.map(category => <a href="#" className={isActive === category._id ? activeClass : notActiveClass} key={category._id} onClick={e=>(setActive(e.target.key), console.log('im clicked', e.target.key))}>{category.name}</a>)}
   </div>
   )
 }
 
-
-
-
-// export default () => 
-//   <aside className="Aside">
-//     <Categories />
-//   </aside>
+export default () => 
+  <aside className="Aside">
+    <Categories />
+  </aside>

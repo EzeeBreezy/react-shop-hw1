@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import "../App.css"
 import decode from 'jwt-decode'
+import RangeInput from './RangeInput'
 
 const Logo = () => 
   <div className="col-3 p-3">
@@ -34,7 +35,8 @@ const LoginForm = ({onLogin, onSwitchForm}) => {
             <div className="row">
               <div className="col">
                 <div className='input-group input-group-sm'>
-                  <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
+                  <RangeInput min={2} max={10} type="text" className="form-control m-3" placeholder="Enter login..."/>
+                  {/* <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/> */}
                   <input type="password" className="form-control m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
                 </div>
               </div>
@@ -99,7 +101,7 @@ const Header = ({height}) => {
       <SearchBar />
       {isRegisterShowed 
         ? <RegisterForm onRegister={(l,p)=> registerGraphQL(l,p)} onSwitchForm={()=> setRegisterShowed(false)}/>
-        :  <LoginForm onLogin={ (l,p) => loginGraphQL(l,p)} onSwitchForm={()=> (setRegisterShowed(true), console.log(!isRegisterShowed))} /> }
+        :  <LoginForm onLogin={ (l,p) => loginGraphQL(l,p)} onSwitchForm={()=> setRegisterShowed(true)} /> }
     </div>
   </header>
   )
