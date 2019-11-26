@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import "../App.css"
 import decode from 'jwt-decode'
 
-
 const Logo = () => 
   <div className="col-3 p-3">
     <i className="fab fa-react" id="reactShopLogo">ShopeactQL</i> 
@@ -22,44 +21,48 @@ const SearchBar = () => {
   )
 }
 
-const LoginForm = ({onLogin}) => {
+const LoginForm = ({onLogin, onSwitchForm}) => {
   const [login, setLogin] = useState("")
   const validLogin = login.length && login.length >= 3
   const [password, setPassword] = useState("")
   const validPassword = password.length && password.length >= 3
+  const [isLoggedIn, setLoggedIn] = useState(false)
   return (
     <>
-        <div className="col-3 p-3" id="loginContainer">
-          <div className="row">
-            <div className="col">
-              <div className='input-group input-group-sm'>
-                <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
-                <input type="password" className="form-control m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
+      {!isLoggedIn
+        ? <div className="col-3 p-3" id="loginContainer">
+            <div className="row">
+              <div className="col">
+                <div className='input-group input-group-sm'>
+                  <input type="text" className="form-control m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
+                  <input type="password" className="form-control m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <button className="btn btn-primary pl-2 pr-2 m-3 w-25" disabled={!validLogin || !validPassword} onClick={()=> (onLogin(login, password), setLoggedIn(true))}>
+                    Login
+                </button>
+                <button className="btn btn-info pl-2 pr-2 m-3 w-25" onClick={()=> onSwitchForm()}>
+                    Register
+                </button>
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col">
-              <button className="btn btn-primary pl-2 pr-2 m-3 w-25" disabled={!validLogin || !validPassword} onClick={()=> onLogin(login, password)}>
-                  Login
-              </button>
-              <button className="btn btn-info pl-2 pr-2 m-3 w-25" onClick={()=> toggleLoginRegister()}>
-                  Register
-              </button>
-            </div>
+
+        : <div className="col-3 p-3" id="userNameContainer">
+            <p className="text-warning">Welcome, {login}!</p>
+            <button className="btn btn-info pl-2 pr-2 w-50" onClick={() => setLoggedIn(false)}>
+                Logout
+            </button>
           </div>
-        </div>
-        <div className="col-3 p-3 d-none" id="userNameContainer">
-        <p className="text-warning">Welcome, {login}!</p>
-          <button className="btn btn-info pl-2 pr-2 w-50" onClick={() => toggleUserLogin()}>
-              Logout
-          </button>
-        </div>
+  }
     </>
   )
 }
 
-const RegisterForm = ({onRegister}) => {
+const RegisterForm = ({onRegister, onSwitchForm}) => {
   const [login, setLogin] = useState("")
   const validLogin = login.length && login.length >= 3
   const [password, setPassword] = useState("")
@@ -67,7 +70,7 @@ const RegisterForm = ({onRegister}) => {
   const [password2, setPassword2] = useState("")
   const passwordConfirmed = password === password2
   return (
-        <div className="col-3 p-3 d-none" id="registerContainer">
+        <div className="col-3 p-3" id="registerContainer">
           <div className="row">
             <div className="col-6">
               <input type="text" className="form-control form-control-sm m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
@@ -78,7 +81,7 @@ const RegisterForm = ({onRegister}) => {
               <button className="btn btn-primary pl-2 pr-2 m-3 w-75" disabled={!validLogin || !validPassword || !passwordConfirmed} onClick={()=> onRegister(login, password)}>
                   Create account
               </button>
-              <button className="btn btn-info pl-2 pr-2 m-3 w-75" onClick={()=> toggleLoginRegister()}>
+              <button className="btn btn-info pl-2 pr-2 m-3 w-75" onClick={()=> onSwitchForm()}>
                   Back to Login
               </button>
             </div>
@@ -87,14 +90,19 @@ const RegisterForm = ({onRegister}) => {
   )
 }
 
-const toggleLoginRegister = () => {
-  document.getElementById('loginContainer').classList.toggle('d-none')
-  document.getElementById('registerContainer').classList.toggle('d-none')
-}
-
-const toggleUserLogin = () => {
-  document.getElementById('loginContainer').classList.toggle('d-none')
-  document.getElementById('userNameContainer').classList.toggle('d-none')
+const Header = ({height}) => {
+  const [isRegisterShowed, setRegisterShowed] = useState(false)
+  return (
+    <header style={{height}}>
+    <div className="row justify-content-around align-items-center bg-dark mb-3" style={{height}} >
+      <Logo />
+      <SearchBar />
+      {isRegisterShowed 
+        ? <RegisterForm onRegister={(l,p)=> registerGraphQL(l,p)} onSwitchForm={()=> setRegisterShowed(false)}/>
+        :  <LoginForm onLogin={ (l,p) => loginGraphQL(l,p)} onSwitchForm={()=> (setRegisterShowed(true), console.log(!isRegisterShowed))} /> }
+    </div>
+  </header>
+  )
 }
 
 const loginGraphQL = async (login, password) => {
@@ -121,8 +129,6 @@ const loginGraphQL = async (login, password) => {
      sessionStorage.authToken = token
      let decodedToken = decode(token)
      console.log(decodedToken, decodedToken.sub.login) //!!! leaving just for now
-     toggleUserLogin()
-    //  return decodedToken.sub.login
    } else alert("failed to login")
 }
 
@@ -152,14 +158,7 @@ const registerGraphQL = async(login, password) => {
     : alert("user with this name already exists!")
 }
 
-export default ({height}) => 
-  <header className="Header" style={{height}}>
-    <div className="row justify-content-around align-items-center bg-dark mb-3" style={{height}} >
-      <Logo />
-      <SearchBar />
-      <LoginForm onLogin={ (l,p) => loginGraphQL(l,p)} />
-      <RegisterForm onRegister={(l,p)=> registerGraphQL(l,p)} />
-    </div>
-  </header>
+export default ({height}) => <Header height={height}/>
+
   
 
