@@ -7,8 +7,9 @@ class RangeInput extends React.Component {
             valid: false,
             value: ""
         }
+        this.isValid = this.isValid.bind(this)
       }
-    
+
     isValid() {
         this.state.value.length <= this.props.max && this.state.value.length >= this.props.min
             ? this.setState({valid: true})

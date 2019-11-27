@@ -29,18 +29,19 @@ const readCategories = async () => {
 
 const Categories = () => {
   const [categoriesList, setCategoriesList] = useState([])
-  readCategories().then(data=>(setCategoriesList(data.data.CategoryFind), console.log(data)))
+  if (categoriesList.length === 0)
+  readCategories().then(data=>setCategoriesList(data.data.CategoryFind))
   const [isActive, setActive] = useState('')
   const activeClass = 'list-group-item list-group-item-action active'
   const notActiveClass = 'list-group-item list-group-item-action'
   return (
   <div className="list-group list-group-flush">
-    {categoriesList.map(category => <a href="#" className={isActive === category._id ? activeClass : notActiveClass} key={category._id} onClick={e=>(setActive(e.target.key), console.log('im clicked', e.target.key))}>{category.name}</a>)}
+    {categoriesList.map(category => <a href="#" className={isActive === category._id ? activeClass : notActiveClass} key={category._id} onClick={e=>setActive(category._id)}>{category.name}</a>)}
   </div>
   )
 }
 
-export default () => 
+export default () =>
   <aside className="Aside">
     <Categories />
   </aside>

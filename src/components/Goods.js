@@ -29,7 +29,7 @@ const readGoods = async () => {
 }
 
 
-const Good = ({_id, images, name, price, description}) => 
+const Good = ({_id, images, name, price, description}) =>
 <>
   <div className="card" style="width: 18rem;" key={{_id}}>
     <img src={"http://shop-roles.asmer.fs.a-level.com.ua/"+{images}} className="card-img-top" alt="good picture" />>
@@ -56,6 +56,7 @@ const Good = ({_id, images, name, price, description}) =>
 
 const Goods = () => {
   const [goodsList, setGoodsList] = useState([])
+  if (goodsList.length === 0)
   readGoods().then(data=>(setGoodsList(data.data.GoodFind), console.log(data)))
   return (
   <>
