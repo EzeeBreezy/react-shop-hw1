@@ -1,8 +1,8 @@
 import React from "react"
 import "./App.css"
 import Header from './components/Header'
-import Categories from './components/Categories'
-import Goods from './components/Goods'
+// import Categories from './components/Categories'
+// import Goods from './components/Goods'
 import Footer from './components/Footer'
 
 export default () => 
@@ -10,10 +10,10 @@ export default () =>
     <Header height={'170px'}/>
     <main className="row">
       <div className="col-4">
-        <Categories /> 
+        {/* <Categories />  */}
       </div>
       <div className="col">
-        <Goods />
+        {/* <Goods /> */}
       </div>
     </main>
     <Footer height={'100px'}/>   
