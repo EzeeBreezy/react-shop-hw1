@@ -1,4 +1,4 @@
-import React, {useState, useMemo, Component} from 'react';
+import React, {Component} from 'react';
 
 
 class PromiseComponent extends Component {
