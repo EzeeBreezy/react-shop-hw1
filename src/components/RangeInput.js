@@ -21,9 +21,4 @@ class RangeInput extends React.Component {
     }
 }
 
-// const RangeInput = ({min, max, ...other}) => {
-//     const [isValid, setValid] = useState(false)
-
-// }
-
-export default () => <RangeInput />
+export default RangeInput

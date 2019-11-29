@@ -14,7 +14,7 @@ class PromiseComponent extends Component {
     }
 
     render(){
-        console.log(this.props, this.state)
+        // console.log(this.props, this.state)
         if (this.state.status === 'PENDING'){
             const Loading = this.props.pending
             return <Loading />

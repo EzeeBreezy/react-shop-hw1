@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import "../App.css"
 import decode from 'jwt-decode'
 import RangeInput from './RangeInput'
+import PasswordConfirm from './PasswordConfirm'
 
 const Logo = () => 
   <div className="col-3 p-3">
@@ -75,9 +76,11 @@ const RegisterForm = ({onRegister, onSwitchForm}) => {
         <div className="col-3 p-3" id="registerContainer">
           <div className="row">
             <div className="col-6">
-              <input type="text" className="form-control form-control-sm m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/>
-              <input type="password" className="form-control form-control-sm m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
-              <input type="password" className="form-control form-control-sm m-3" value={password2} onChange={e=>setPassword2(e.target.value)} placeholder="Confirm password..."/>
+              <RangeInput min={2} max={10} type="text" className="form-control form-control-sm m-3" placeholder="Enter login..."/>
+              {/* <input type="text" className="form-control form-control-sm m-3" value={login} onChange={e=>setLogin(e.target.value)} placeholder="Enter login..."/> */}
+              <PasswordConfirm min={3} type="password" className="form-control form-control-sm m-3" ph1="Password..." ph2="Confirm password..." />
+              {/* <input type="password" className="form-control form-control-sm m-3" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password..."/>
+              <input type="password" className="form-control form-control-sm m-3" value={password2} onChange={e=>setPassword2(e.target.value)} placeholder="Confirm password..."/> */}
             </div>
             <div className="col-6">
               <button className="btn btn-primary pl-2 pr-2 m-3 w-75" disabled={!validLogin || !validPassword || !passwordConfirmed} onClick={()=> onRegister(login, password)}>
